@@ -1,0 +1,723 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <title>ARTDOSKI174 — Товары для бани</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <style>
+    :root {
+      --bg: #0d1117;
+      --bg-card: #161b22;
+      --accent: #c28a5b;
+      --accent-soft: #f0d2a3;
+      --text-main: #f5f5f5;
+      --text-muted: #a8a8a8;
+      --radius-lg: 16px;
+      --shadow: 0 16px 40px rgba(0,0,0,0.55);
+      --border-soft: rgba(255,255,255,0.08);
+    }
+
+    * { box-sizing:border-box; margin:0; padding:0; }
+
+    body {
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      background: radial-gradient(circle at top, #30363d 0, #16191d 35%, #050608 100%);
+      color: var(--text-main);
+      min-height: 100vh;
+      line-height: 1.5;
+    }
+
+    html { scroll-behavior:smooth; }
+
+    .wrapper {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 20px 16px 60px;
+    }
+
+    /* ====== HEADER c логотипом ARTDOSKI174 ====== */
+    .site-header {
+      display:flex;
+      flex-direction:column;
+      align-items:center;
+      gap:14px;
+      padding-bottom:18px;
+      border-bottom:1px solid var(--border-soft);
+    }
+
+    .logo-block { text-align:center; }
+
+    .logo-text {
+      position: relative;
+      display: inline-block;
+      font-size: clamp(3.2rem, 6vw, 4.4rem);
+      font-weight: 900;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      background-image: url('https://img.freepik.com/premium-photo/wood-texture-background_14117-3829.jpg?semt=ais_hybrid&w=740');
+      background-size: cover;
+      background-position: center;
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      filter: contrast(1.1) brightness(1.05);
+    }
+
+    .logo-sub {
+      font-size: 0.86rem;
+      text-transform: uppercase;
+      letter-spacing: 0.18em;
+      color: #b0b0b0;
+      margin-top: 4px;
+    }
+
+    .header-main {
+      text-align:center;
+      max-width:720px;
+    }
+
+    .header-main h1 {
+      font-size: clamp(1.6rem, 2.6vw, 2.1rem);
+      margin-bottom: 6px;
+    }
+
+    .header-main p {
+      font-size: 0.95rem;
+      color: var(--text-muted);
+      margin-bottom: 14px;
+    }
+
+    /* Поисковая строка */
+    .search-bar {
+      width:100%;
+      max-width:520px;
+      margin: 0 auto 6px;
+      position: relative;
+    }
+
+    .search-input {
+      width:100%;
+      padding:10px 36px 10px 14px;
+      border-radius:999px;
+      border:1px solid var(--border-soft);
+      background:rgba(3,3,3,0.7);
+      color:var(--text-main);
+      font-size:0.9rem;
+      outline:none;
+      box-shadow:0 10px 26px rgba(0,0,0,0.6);
+    }
+
+    .search-input::placeholder { color:#7f868e; }
+
+    .search-icon {
+      position:absolute;
+      right:11px;
+      top:50%;
+      transform:translateY(-50%);
+      font-size:1rem;
+      color:#9aa0a8;
+      pointer-events:none;
+    }
+
+    .search-hint {
+      font-size:0.78rem;
+      color:var(--text-muted);
+    }
+
+    /* ====== СЕТКА ТОВАРОВ ====== */
+    .products-section {
+      margin-top:26px;
+    }
+
+    .products-grid {
+      display:grid;
+      grid-template-columns:repeat(3,minmax(0,1fr));
+      gap:18px;
+      margin-top:18px;
+    }
+
+    @media (max-width: 900px) {
+      .products-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    }
+    @media (max-width: 640px) {
+      .products-grid { grid-template-columns: minmax(0, 1fr); }
+    }
+
+    .product-card {
+      background: rgba(15, 16, 19, 0.9);
+      border-radius: var(--radius-lg);
+      overflow: hidden;
+      border: 1px solid var(--border-soft);
+      box-shadow: 0 8px 26px rgba(0,0,0,0.5);
+      display:flex;
+      flex-direction:column;
+      cursor:pointer;
+      transition: transform 0.18s ease, box-shadow 0.18s ease, border-color 0.18s ease, background 0.18s ease;
+    }
+
+    .product-card:hover {
+      transform: translateY(-4px);
+      box-shadow: var(--shadow);
+      border-color: rgba(194,138,91,0.8);
+      background: rgba(18, 19, 23, 0.98);
+    }
+
+    /* Контейнер превью-картинки */
+    .product-img-wrap {
+      width: 100%;
+      height: 320px;       /* высота карточки с фото */
+      position: relative;
+      overflow: hidden;
+      background:#000;
+    }
+
+    .product-img-wrap img {
+      position:absolute;
+      inset:0;
+      width:100%;
+      height:100%;
+      object-fit:contain;  /* показываем картинку полностью */
+      transition: transform 0.3s ease;
+    }
+
+    .product-card:hover .product-img-wrap img { transform: scale(1.05); }
+
+    .product-body {
+      padding:12px 14px 14px;
+      display:flex;
+      flex-direction:column;
+      gap:6px;
+      flex:1;
+    }
+
+    .product-title {
+      font-size:0.98rem;
+      font-weight:600;
+    }
+
+    .product-short {
+      font-size:0.86rem;
+      color:var(--text-muted);
+      min-height:2.5em;
+    }
+
+    .product-bottom {
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      margin-top:6px;
+    }
+
+    .product-price {
+      font-weight:600;
+      color:var(--accent-soft);
+      font-size:0.98rem;
+    }
+
+    .btn-buy {
+      border-radius:999px;
+      padding:6px 14px;
+      border:none;
+      cursor:pointer;
+      background:radial-gradient(circle at top left, var(--accent-soft), var(--accent));
+      color:#2a1407;
+      display:inline-flex;
+      align-items:center;
+      gap:6px;
+      font-size:0.86rem;
+      box-shadow:0 8px 20px rgba(0,0,0,0.7);
+      transition: transform 0.15s ease, box-shadow 0.15s ease, filter 0.15s ease;
+    }
+
+    .btn-buy:hover {
+      transform: translateY(-1px);
+      box-shadow:0 12px 26px rgba(0,0,0,0.85);
+      filter:brightness(1.05);
+    }
+
+    /* ====== МОДАЛЬНОЕ ОКНО ====== */
+    .modal-overlay {
+      position:fixed;
+      inset:0;
+      background:rgba(0,0,0,0.84);
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      opacity:0;
+      pointer-events:none;
+      transition:opacity 0.25s ease;
+      padding:16px;
+      z-index:1000;
+    }
+
+    .modal-overlay.active { opacity:1; pointer-events:auto; }
+
+    .modal {
+      background:#12161c;
+      border-radius:20px;
+      max-width:900px;
+      width:100%;
+      max-height:90vh;
+      display:grid;
+      grid-template-columns:minmax(0,3fr) minmax(0,2fr);
+      overflow:hidden;
+      box-shadow:var(--shadow);
+      border:1px solid var(--border-soft);
+    }
+
+    @media (max-width:800px){ .modal{ grid-template-columns:minmax(0,1fr); max-height:95vh; } }
+
+    .modal-left { background:#000; position:relative; }
+    .modal-right { padding:16px 18px 18px; display:flex; flex-direction:column; gap:10px; }
+
+    .modal-close {
+      position:absolute;
+      top:10px;
+      right:14px;
+      font-size:1.6rem;
+      cursor:pointer;
+      color:#ffffff;
+      z-index:10;
+      background:none;
+      border:none;
+    }
+
+    .carousel {
+      position:relative;
+      width:100%;
+      padding-top:70%;
+      overflow:hidden;
+    }
+
+    .carousel img {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+      background-color: #000;
+      opacity: 0;
+      transition: opacity 0.3s ease;
+    }
+
+    .carousel img.active { opacity:1; }
+
+    .carousel-btn {
+      position:absolute;
+      top:50%;
+      transform:translateY(-50%);
+      width:32px;
+      height:32px;
+      border-radius:50%;
+      border:none;
+      background:rgba(0,0,0,0.6);
+      color:#fff;
+      cursor:pointer;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      font-size:1.1rem;
+    }
+
+    .carousel-btn.left { left:10px; }
+    .carousel-btn.right { right:10px; }
+
+    .carousel-dots {
+      position:absolute;
+      bottom:10px;
+      left:50%;
+      transform:translateX(-50%);
+      display:flex;
+      gap:6px;
+    }
+
+    .carousel-dot {
+      width:8px;
+      height:8px;
+      border-radius:50%;
+      border:1px solid #fff;
+      background:transparent;
+      opacity:0.6;
+      cursor:pointer;
+    }
+
+    .carousel-dot.active {
+      background:var(--accent-soft);
+      opacity:1;
+      border-color:var(--accent-soft);
+    }
+
+    .modal-title {
+      font-size:1.1rem;
+      font-weight:600;
+    }
+
+    .modal-price {
+      font-size:1.05rem;
+      font-weight:600;
+      color:var(--accent-soft);
+    }
+
+    .modal-desc {
+      font-size:0.9rem;
+      color:var(--text-muted);
+      max-height:160px;
+      overflow-y:auto;
+    }
+
+    .modal-actions {
+      margin-top:auto;
+      display:flex;
+      flex-direction:column;
+      gap:6px;
+    }
+
+    .btn-main {
+      border-radius:999px;
+      padding:10px 16px;
+      border:none;
+      font-size:0.96rem;
+      font-weight:500;
+      cursor:pointer;
+      background:radial-gradient(circle at top left, var(--accent-soft), var(--accent));
+      color:#291209;
+      box-shadow:0 10px 26px rgba(0,0,0,0.8);
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      gap:6px;
+      transition:transform 0.15s ease, box-shadow 0.15s ease, filter 0.15s ease;
+    }
+
+    .btn-main:hover {
+      transform:translateY(-1px);
+      filter:brightness(1.05);
+      box-shadow:0 14px 30px rgba(0,0,0,0.9);
+    }
+
+    .btn-secondary {
+      border-radius:999px;
+      padding:8px 14px;
+      font-size:0.86rem;
+      border:1px solid var(--border-soft);
+      background:transparent;
+      color:var(--text-muted);
+      cursor:pointer;
+    }
+
+    .btn-secondary:hover { background:rgba(255,255,255,0.04); }
+
+    .whatsapp-hint {
+      font-size:0.88rem;
+      color:var(--text-muted);
+      margin-top:4px;
+    }
+
+    .whatsapp-hint a {
+      color:var(--accent-soft);
+      text-decoration:none;
+    }
+
+    .whatsapp-hint a:hover {
+      text-decoration:underline;
+    }
+
+    footer {
+      margin-top:34px;
+      font-size:0.78rem;
+      color:var(--text-muted);
+      text-align:center;
+    }
+  </style>
+</head>
+<body>
+  <div class="wrapper">
+    <header class="site-header">
+      <div class="logo-block">
+        <div class="logo-text">ARTDOSKI174</div>
+        <div class="logo-sub">Бани · Доска · Товары для парной</div>
+      </div>
+      <div class="header-main">
+        <h1>Магазин товаров для бани</h1>
+        <p>Выберите всё для вашей парной: от веника и шайки до печи и дымохода.</p>
+
+        <div class="search-bar">
+          <input
+            id="searchInput"
+            type="text"
+            class="search-input"
+            placeholder="Найти товар: веник, печь, шайка..."
+          />
+          <span class="search-icon">🔍</span>
+        </div>
+        <div class="search-hint">Начните вводить название или тип товара, чтобы отфильтровать каталог.</div>
+      </div>
+    </header>
+
+    <!-- ====== КАТАЛОГ ТОВАРОВ ====== -->
+    <section class="products-section">
+      <div class="products-grid">
+
+        <!-- КАРТОЧКА ТОВАРА №1 -->
+        <article
+          class="product-card"
+          data-title="Печь банная ASTON 16"
+          data-price="25 000 ₽"
+          data-short="Печь для парной объёмом 14–18 м³."
+          data-description="Материал: сталь. Мин. объём парной: 14 м³. Макс. объём парной: 18 м³. Толщина металла: 4 мм. Выносная топка: да. Высота: 750 мм. Ширина: 420 мм. Глубина: 670 мм. Диаметр дымохода: 115 мм. Масса камней: 80–120/15 кг. Тип дверцы: со стеклом. Каменка: открытая/закрытая. Теплообменник: нет. Выход дымохода: верхний."
+          data-images="https://vezuviy.shop/wp-content/uploads/shop/65/4a/35/24/aston20_1-2048x2048.jpeg"
+        >
+          <div class="product-img-wrap">
+            <img
+              src="https://vezuviy.shop/wp-content/uploads/shop/65/4a/35/24/aston20_1-2048x2048.jpeg"
+              alt="Печь банная ASTON 16"
+            />
+          </div>
+          <div class="product-body">
+            <div class="product-title">Печь банная ASTON 16</div>
+            <div class="product-short">Печь для парной объёмом 14–18 м³.</div>
+            <div class="product-bottom">
+              <div class="product-price">25 000 ₽</div>
+              <button class="btn-buy" type="button">Купить</button>
+            </div>
+          </div>
+        </article>
+
+        <!-- КАРТОЧКА ТОВАРА №2 — Дверь -->
+        <article
+          class="product-card"
+          data-title="Дверь для бани DoorWood бронза матовая 190×80×8"
+          data-price="15 000 ₽"
+          data-short="Стеклянная дверь DoorWood, универсальное открывание."
+          data-description="Стеклянная дверь для бани DoorWood. Открывание: универсальное (по умолчанию — правое). Коробка: ольха. Полотно: закалённое стекло 8 мм. Ручка: деревянная с магнитным замком. Петли: хромированные 3 шт. Размер по коробке: 190×80 см."
+          data-images="https://tkstroitel.ru/upload/resize_cache/iblock/8f6/450_450_140cd750bba9870f18aada2478b24840a/bl0cz6993c7x9xs1yepmrrl4ucitg2p4.jpg"
+        >
+          <div class="product-img-wrap">
+            <img
+              src="https://tkstroitel.ru/upload/resize_cache/iblock/8f6/450_450_140cd750bba9870f18aada2478b24840a/bl0cz6993c7x9xs1yepmrrl4ucitg2p4.jpg"
+              alt="Дверь для бани DoorWood бронза матовая"
+            />
+          </div>
+          <div class="product-body">
+            <div class="product-title">Дверь для бани DoorWood бронза матовая 190×80×8</div>
+            <div class="product-short">
+              Стеклянная дверь DoorWood, универсальное открывание.
+            </div>
+            <div class="product-bottom">
+              <div class="product-price">15 000 ₽</div>
+              <button class="btn-buy" type="button">Купить</button>
+            </div>
+          </div>
+        </article>
+
+        <!-- КАРТОЧКА ТОВАРА №3 – Панно -->
+        <article
+          class="product-card"
+          data-title="Панно из можжевельника — Медведь"
+          data-price="5 000 ₽"
+          data-short="Декоративное панно из натурального можжевельника."
+          data-description="Панно из натурального можжевельника. Размер 40×80 см. Подходит для интерьера бани, дома или гостевого домика."
+          data-images="images/bear.png"
+        >
+          <div class="product-img-wrap">
+            <img src="images/bear.png" alt="Панно из можжевельника — Медведь" />
+          </div>
+          <div class="product-body">
+            <div class="product-title">Панно из можжевельника — Медведь</div>
+            <div class="product-short">Размер панно: 40×80</div>
+            <div class="product-bottom">
+              <div class="product-price">5 000 ₽</div>
+              <button class="btn-buy" type="button">Купить</button>
+            </div>
+          </div>
+        </article>
+
+      </div>
+    </section>
+
+    <footer>
+      © <span id="year"></span> ARTDOSKI174 · Товары для бани
+    </footer>
+  </div>
+
+  <!-- ====== МОДАЛЬНОЕ ОКНО С КАРУСЕЛЬЮ ====== -->
+  <div class="modal-overlay" id="productModal">
+    <div class="modal">
+      <div class="modal-left">
+        <div class="carousel" id="carousel"></div>
+      </div>
+      <div class="modal-right">
+        <button class="modal-close" id="modalClose" type="button">×</button>
+        <div class="modal-title" id="modalTitle"></div>
+        <div class="modal-price" id="modalPrice"></div>
+        <div class="modal-desc" id="modalDesc"></div>
+        <div class="modal-actions">
+          <button class="btn-main" id="modalBuyBtn" type="button">
+            Написать в WhatsApp
+          </button>
+          <div class="whatsapp-hint">
+            или напишите нам в WhatsApp:
+            <a href="#" id="whatsappLink" target="_blank" rel="noopener noreferrer"></a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // текущий год в подвале
+    document.getElementById("year").textContent = new Date().getFullYear();
+
+    const modalOverlay   = document.getElementById("productModal");
+    const modalTitle     = document.getElementById("modalTitle");
+    const modalPrice     = document.getElementById("modalPrice");
+    const modalDesc      = document.getElementById("modalDesc");
+    const modalClose     = document.getElementById("modalClose");
+    const modalBuyBtn    = document.getElementById("modalBuyBtn");
+    const whatsappLinkEl = document.getElementById("whatsappLink");
+    const carouselContainer = document.getElementById("carousel");
+    const searchInput    = document.getElementById("searchInput");
+
+    // 🔢 ВАШ НОМЕР WHATSAPP — ИЗМЕНИ ЗДЕСЬ
+    const WHATSAPP_NUMBER = "79990000000"; // пример: +7 999 000 00 00 → 79990000000
+
+    let currentIndex = 0;
+    let images = [];
+
+    // ОТКРЫТИЕ МОДАЛКИ
+    function openModal(productCard) {
+      const title = productCard.dataset.title;
+      const price = productCard.dataset.price;
+      const short = productCard.dataset.short;
+      const description = productCard.dataset.description || short || "";
+      const imagesStr = productCard.dataset.images || "";
+      images = imagesStr.split(",").map(s => s.trim()).filter(Boolean);
+
+      modalTitle.textContent = title;
+      modalPrice.textContent = price;
+      modalDesc.textContent = description;
+
+      // ссылка для WhatsApp
+      const msg = encodeURIComponent("Здравствуйте! Хочу заказать: " + title + " (" + price + ")");
+      const waLink = `https://wa.me/${WHATSAPP_NUMBER}?text=${msg}`;
+
+      whatsappLinkEl.href = waLink;
+      whatsappLinkEl.textContent = "+7 " + WHATSAPP_NUMBER.slice(1);
+
+      modalBuyBtn.onclick = () => {
+        window.open(waLink, "_blank");
+      };
+
+      renderCarousel();
+      currentIndex = 0;
+      setActiveSlide(0);
+
+      modalOverlay.classList.add("active");
+    }
+
+    function closeModal() {
+      modalOverlay.classList.remove("active");
+      carouselContainer.innerHTML = "";
+    }
+
+    modalClose.addEventListener("click", closeModal);
+    modalOverlay.addEventListener("click", (e) => {
+      if (e.target === modalOverlay) closeModal();
+    });
+
+    // КАРУСЕЛЬ
+    function renderCarousel() {
+      carouselContainer.innerHTML = "";
+
+      if (!images.length) {
+        const fallback = document.createElement("div");
+        fallback.style.color = "#fff";
+        fallback.style.padding = "16px";
+        fallback.textContent = "Нет изображений для этого товара.";
+        carouselContainer.appendChild(fallback);
+        return;
+      }
+
+      images.forEach((src, index) => {
+        const img = document.createElement("img");
+        img.src = src;
+        img.alt = "Изображение товара " + (index + 1);
+        img.classList.add("carousel-img");
+        if (index === 0) img.classList.add("active");
+        carouselContainer.appendChild(img);
+      });
+
+      const btnLeft = document.createElement("button");
+      btnLeft.type = "button";
+      btnLeft.className = "carousel-btn left";
+      btnLeft.textContent = "‹";
+
+      const btnRight = document.createElement("button");
+      btnRight.type = "button";
+      btnRight.className = "carousel-btn right";
+      btnRight.textContent = "›";
+
+      btnLeft.addEventListener("click", () => changeSlide(currentIndex - 1));
+      btnRight.addEventListener("click", () => changeSlide(currentIndex + 1));
+
+      carouselContainer.appendChild(btnLeft);
+      carouselContainer.appendChild(btnRight);
+
+      const dotsWrap = document.createElement("div");
+      dotsWrap.className = "carousel-dots";
+      images.forEach((_, i) => {
+        const dot = document.createElement("button");
+        dot.type = "button";
+        dot.className = "carousel-dot";
+        if (i === 0) dot.classList.add("active");
+        dot.addEventListener("click", () => changeSlide(i));
+        dotsWrap.appendChild(dot);
+      });
+      carouselContainer.appendChild(dotsWrap);
+    }
+
+    function setActiveSlide(index) {
+      const imgs = carouselContainer.querySelectorAll("img.carousel-img");
+      const dots = carouselContainer.querySelectorAll(".carousel-dot");
+      if (!imgs.length) return;
+
+      imgs.forEach((img, i) => img.classList.toggle("active", i === index));
+      dots.forEach((dot, i) => dot.classList.toggle("active", i === index));
+      currentIndex = index;
+    }
+
+    function changeSlide(newIndex) {
+      if (!images.length) return;
+      if (newIndex < 0) newIndex = images.length - 1;
+      if (newIndex >= images.length) newIndex = 0;
+      setActiveSlide(newIndex);
+    }
+
+    // ОБРАБОТЧИКИ "КУПИТЬ" И КЛИКА ПО КАРТОЧКЕ
+    document.querySelectorAll(".product-card").forEach((card) => {
+      const btn = card.querySelector(".btn-buy");
+      btn.addEventListener("click", (e) => {
+        e.stopPropagation();
+        openModal(card);
+      });
+      card.addEventListener("click", () => openModal(card));
+    });
+
+    // ПОИСК
+    searchInput.addEventListener("input", () => {
+      const query = searchInput.value.toLowerCase().trim();
+      const cards = document.querySelectorAll(".product-card");
+      cards.forEach(card => {
+        const title = (card.dataset.title || "").toLowerCase();
+        const short = (card.dataset.short || "").toLowerCase();
+        if (!query || title.includes(query) || short.includes(query)) {
+          card.style.display = "";
+        } else {
+          card.style.display = "none";
+        }
+      });
+    });
+  </script>
+</body>
+</html>
